@@ -24,7 +24,7 @@ eps = 'e'
 
 class CFG():
     
-    def __init__(self, input_file : str = 'inputs/cfg2.in'):
+    def __init__(self, input_file : str = 'inputs/cfg_first.in'):
         
         self.productions = {}
 
@@ -60,12 +60,18 @@ class CFG():
         
         if eps in self.productions[node]:
             has_eps = True
+            
+        if eps in self.productions[node]:
+            self.first[node].append(eps)
+            
         
         
         for prod in self.productions[node]:
             
             if prod == eps:
                 continue
+            
+            
             
             node_first = []
         
@@ -124,6 +130,7 @@ class CFG():
         
         print("First set: {}".format(self.first))
         
+
 
 if __name__ == '__main__':
     
