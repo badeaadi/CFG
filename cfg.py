@@ -202,6 +202,16 @@ class CFG():
         print("Follow set: {}".format(self.follow))
         
 
+    def _eliminate_left_recursion(self):
+        
+        # https://www.geeksforgeeks.org/removing-direct-and-indirect-left-recursion-in-a-grammar/
+        pass
+        
+        
+    def _left_factorization(self):
+        
+        # https://www.gatevidyalay.com/left-factoring-examples-compiler-design/
+        pass
 
 if __name__ == '__main__':
     
