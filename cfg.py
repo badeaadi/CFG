@@ -24,7 +24,7 @@ eps = 'e'
 
 class CFG():
     
-    def __init__(self, input_file : str = 'inputs/cfg_first.in'):
+    def __init__(self, input_file : str = 'inputs/cfg_follow.in'):
         
         self.productions = {}
 
@@ -52,6 +52,8 @@ class CFG():
         print("Terminals : {}".format(self.terminals))
         
     def _solve_first(self, node = 'S'):
+        
+        # https://www.geeksforgeeks.org/first-set-in-syntax-analysis/
         
         if self.first[node] != []:
             return
@@ -104,8 +106,65 @@ class CFG():
         
         
     def _solve_follow(self, node = 'S'):
-        pass
         
+        # https://www.geeksforgeeks.org/follow-set-in-syntax-analysis/
+        
+        if node == 'S':
+            self.follow[node].append('#')
+            
+        
+        if eps in self.follow[node]:
+            self.follow[node].remove(eps)
+                
+        self.follow[node] = list(set((self.follow[node])))
+            
+        #print(node)
+        
+        if node in self.terminals:
+            return
+        
+        
+        if self.visited[node] == True:
+            return
+        
+        self.visited[node] = True
+        
+        
+        for prod in self.productions[node]:
+            
+            if len(prod) == 1 and prod[0] == eps:
+                continue
+                
+            
+            for i in range(0, len(prod)):
+                
+                j = i + 1
+                while j < len(prod):
+                    
+                    if prod[i] == 'B':
+                        print(j)
+                    
+                    if eps in self.first[prod[j]]:
+                        self.follow[prod[i]] += self.first[prod[j]]
+                        j += 1
+                    else:
+                        break
+                    
+                if j < len(prod):
+                    self.follow[prod[i]] += self.first[prod[j]]
+                else:
+                    self.follow[prod[i]] += self.follow[node]
+            
+                self._solve_follow(prod[i])
+                
+            
+            
+        if eps in self.follow[node]:
+            self.follow[node].remove(eps)
+                
+        self.follow[node] = list(set((self.follow[node])))
+        
+      
         
 
     def make_first_and_follow(self):
@@ -129,6 +188,18 @@ class CFG():
                 self._solve_first(nonterm)
         
         print("First set: {}".format(self.first))
+        
+        self.visited = {}
+        
+        for nonterm in self.nonterminals:
+            self.visited[nonterm] = False 
+            
+        for term in self.terminals:
+            self.visited[term] = False
+        
+        self._solve_follow()
+        
+        print("Follow set: {}".format(self.follow))
         
 
 
