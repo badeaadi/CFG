@@ -76,8 +76,9 @@ class CFG():
             eps_poss = True
             
             for prod_elem in prod:
-                
-                self._solve_first(prod_elem)
+
+                if prod_elem != node:
+                    self._solve_first(prod_elem)
                 
                 node_first += self.first[prod_elem] 
 
