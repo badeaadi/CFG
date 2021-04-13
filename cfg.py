@@ -236,7 +236,8 @@ class CFG():
         print("After left eliminations : {}".format(grammar))
         with open("outputs/cfg_elr.out", "w+") as w:
             for key in grammar:
-                w.write(key + " -> " + ' | '.join(grammar[key]) + "\n")
+                if len(grammar[key]) > 0:
+                    w.write(key + " -> " + ' | '.join(grammar[key]) + "\n")
 
     def left_factorization(self):
         # https://www.gatevidyalay.com/left-factoring-examples-compiler-design/
@@ -289,12 +290,13 @@ class CFG():
 
         with open("outputs/cfg_fact.out", "w+") as w:
             for key in grammar:
-                w.write(key + " -> " + ' | '.join(grammar[key]) + "\n")
+                if len(grammar[key]) > 0:
+                    w.write(key + " -> " + ' | '.join(grammar[key]) + "\n")
 
 
 if __name__ == '__main__':
     
     cfg = CFG(input_file="inputs/cfg_fact.in")
     # cfg.make_first_and_follow()
-    # cfg.eliminate_left_recursion()
-    cfg.left_factorization()
+    cfg.eliminate_left_recursion()
+    # cfg.left_factorization()
